@@ -1,12 +1,13 @@
 /* ************************************************************************
  #asset(trackr/*)
+ #asset(qx/icon/Tango/16/actions/help-about.png)
  ************************************************************************ */
-
 qx.Class.define("trackr.Application", {
 	extend : qx.application.Standalone,
 
 	members : {
 		__commands: {},
+		__tabView: null,
 
 		main : function() {
 			this.base(arguments);
@@ -20,14 +21,21 @@ qx.Class.define("trackr.Application", {
 			this._createLayout();
 		},
 
+		getCommand : function(commandId) {
+			return this.__commands[commandId];
+		},
+
 		_createLayout : function() {
 			var dockLayoutComposite = new qx.ui.container.Composite(new qx.ui.layout.Dock());
 			dockLayoutComposite.add(new trackr.view.Header(), { edge : "north" });
 			dockLayoutComposite.add(new trackr.view.MainToolBar(this), { edge : "north" });
-			dockLayoutComposite.add(this._buildSampleWidget("blue"), { edge : "south" });
-			dockLayoutComposite.add(this._buildSampleWidget("green"), { edge : "east" });
-			dockLayoutComposite.add(this._buildSampleWidget("yellow"), { edge : "west" });
-			dockLayoutComposite.add(this._buildSampleWidget("orange"), { edge : "center" });
+
+			this.__tabview = new qx.ui.tabview.TabView();
+			var welcomePage = new qx.ui.tabview.Page("Welcome", "icon/16/actions/help-about.png");
+			welcomePage.setLayout(new qx.ui.layout.VBox());
+			welcomePage.add(new qx.ui.basic.Label("Welcome to Trackr!"));
+			this.__tabview.add(welcomePage);
+			dockLayoutComposite.add(this.__tabview, { edge : "center" });
 
 			this.getRoot().add(dockLayoutComposite, { edge : 0 });
 		},
@@ -35,19 +43,12 @@ qx.Class.define("trackr.Application", {
 		_createCommands: function () {
 			this.__commands.searchTasks = new qx.ui.core.Command("Control+F");
 			this.__commands.searchTasks.addListener("execute", function () {
-				this.debug('click');
+				var page = new qx.ui.tabview.Page("Search Task", "icon/16/actions/help-about.png");
+				page.setShowCloseButton(true);
+				page.setLayout(new qx.ui.layout.Canvas());
+				page.add(new trackr.view.SearchTaskWidget(), { edge : 0 });
+				this.__tabview.add(page);
 			}, this);
-		},
-
-		getCommand : function(commandId) {
-			return this.__commands[commandId];
-		},
-
-		_buildSampleWidget : function(color) {
-			return new qx.ui.core.Widget().set({
-				backgroundColor : color,
-				decorator       : new qx.ui.decoration.Single(3, "solid", "black")
-			});
 		}
 	}
 });
