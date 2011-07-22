@@ -6,7 +6,8 @@ qx.Class.define("trackr.view.SearchTaskWidget", {
 
 		this._setLayout(new qx.ui.layout.Dock());
 
-		this._createChildControl("grid");
+		this._add(new qx.ui.table.Table(), { edge : "north" });
+		this._createChildControl("table");
 	},
 
 	members: {
@@ -15,20 +16,13 @@ qx.Class.define("trackr.view.SearchTaskWidget", {
 			var control;
 
 			switch (id) {
-				case "grid":
-					control = this._buildSampleWidget("red");
+				case "table":
+					control = new qx.ui.table.Table();
 					this._add(control, { edge : "center" });
 					break;
 			}
 
 			return control || this.base(arguments, id);
-		},
-
-		_buildSampleWidget : function(color) {
-			return new qx.ui.core.Widget().set({
-				backgroundColor : color,
-				decorator       : new qx.ui.decoration.Single(3, "solid", "black")
-			});
 		}
 	}
 });
