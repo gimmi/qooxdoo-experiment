@@ -1,0 +1,5 @@
+/qooxdoo-*-sdk/
+/source/script/
+/test/
+/.idea/
+/*.iml
