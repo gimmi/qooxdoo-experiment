@@ -4,9 +4,12 @@ qx.Class.define("trackr.view.SearchTaskComposite", {
 	construct: function() {
 		this.base(arguments);
 
-		this._setLayout(new qx.ui.layout.Dock());
+		this._setLayout(new qx.ui.layout.VBox(10));
+		
+		var filterTextField = new qx.ui.form.TextField();
 
-		this._add(new qx.ui.table.Table(new trackr.data.TaskInfoDataModel()), { edge: "center" });
+		this._add(filterTextField, { flex: 0 });
+		this._add(new qx.ui.table.Table(new trackr.data.TaskInfoDataModel()), { flex: 1 });
 	},
 
 	members: {
