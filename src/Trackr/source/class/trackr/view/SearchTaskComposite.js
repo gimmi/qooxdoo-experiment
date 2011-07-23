@@ -24,6 +24,7 @@ qx.Class.define("trackr.view.SearchTaskComposite", {
 		table.setStatusBarVisible(false);
 		table.setShowCellFocusIndicator(false);
 		table.setColumnWidth(2, 300);
+		table.addListener("cellDblclick", this._tableCellDblClick, this);
 		this._add(table, { flex: 1 });
 	},
 
@@ -35,6 +36,10 @@ qx.Class.define("trackr.view.SearchTaskComposite", {
 		_filterButtonExecute: function (e) {
 			this._taskInfoDataModel.setFilter(this._filterTextField.getValue());
 			this._taskInfoDataModel.reloadData();
+		},
+
+		_tableCellDblClick: function () {
+			this.debug("_tableCellDblClick");
 		}
 	},
 
