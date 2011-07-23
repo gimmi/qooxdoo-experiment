@@ -14,7 +14,7 @@ namespace Trackr
 			_taskInfos = new TaskInfo[n];
 			for(int i = 0; i < n; i++)
 			{
-				_taskInfos[i] = new TaskInfo { Id = n.ToString(), Number = n, Title = string.Format("Task #{0} generated @{1}", i, DateTime.Now.TimeOfDay)};
+				_taskInfos[i] = new TaskInfo { Id = i.ToString(), Number = i, Title = string.Format("Task #{0} generated @{1}", i, DateTime.Now.TimeOfDay)};
 			}
 		}
 
