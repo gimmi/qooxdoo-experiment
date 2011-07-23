@@ -20,12 +20,17 @@ namespace Trackr
 
 		public int GetRowCount(string filter)
 		{
-			return _taskInfos.Length;
+			return ApplyFilter(filter).Count();
 		}
 
 		public IEnumerable<TaskInfo> GetRowData(string filter, int firstRow, int lastRow)
 		{
-			return _taskInfos.Skip(firstRow).Take(lastRow - firstRow + 1);
+			return ApplyFilter(filter).Skip(firstRow).Take(lastRow - firstRow + 1);
+		}
+
+		private IQueryable<TaskInfo> ApplyFilter(string filter)
+		{
+			return _taskInfos.AsQueryable().Where(t => t.Title.Contains(filter));
 		}
 	}
 }

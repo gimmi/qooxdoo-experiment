@@ -12,7 +12,7 @@
 		__filter: "",
 
 		setFilter: function(value) {
-			this.__filter = value;
+			this.__filter = value || "";
 		},
 		
 		// override
