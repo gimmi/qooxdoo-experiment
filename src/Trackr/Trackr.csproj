@@ -69,8 +69,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RpcHandler.cs" />
     <Compile Include="RpcHttpHandler.cs" />
-    <Compile Include="TicketInfo.cs" />
-    <Compile Include="TicketInfoRepository.cs" />
+    <Compile Include="TaskInfo.cs" />
+    <Compile Include="TaskInfoRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

@@ -1,7 +1,7 @@
 ﻿qx.Class.define("trackr.data.TaskInfoDataModel", {
 	extend: qx.ui.table.model.Remote,
 
-	construct: function () {
+	construct: function() {
 		this.base(arguments);
 
 		this.setColumnIds(["id", "number", "title"]);
@@ -9,13 +9,21 @@
 	},
 
 	members: {
-		// override
-		_loadRowCount: function () {
-			var req = new qx.io.request.Xhr("/rpc?class=Trackr.TicketInfoRepository&method=GetRowCount", "PUT");
-			req.setRequestHeaders({ "Content-Type": "application/json" });
-			req.setRequestData(qx.lang.Json.stringify({}));
+		__filter: "",
 
-			req.addListener("success", function (e) {
+		setFilter: function(value) {
+			this.__filter = value;
+		},
+		
+		// override
+		_loadRowCount: function() {
+			var req = new qx.io.request.Xhr("/rpc?class=Trackr.TaskInfoRepository&method=GetRowCount", "PUT");
+			req.setRequestHeaders({ "Content-Type": "application/json" });
+			req.setRequestData(qx.lang.Json.stringify({
+				filter: this.__filter
+			}));
+
+			req.addListener("success", function(e) {
 				var rowCount = e.getTarget().getResponse();
 				this._onRowCountLoaded(rowCount);
 			}, this);
@@ -24,15 +32,16 @@
 		},
 
 		// override
-		_loadRowData: function (firstRow, lastRow) {
-			var req = new qx.io.request.Xhr("/rpc?class=Trackr.TicketInfoRepository&method=GetRowData", "PUT");
+		_loadRowData: function(firstRow, lastRow) {
+			var req = new qx.io.request.Xhr("/rpc?class=Trackr.TaskInfoRepository&method=GetRowData", "PUT");
 			req.setRequestHeaders({ "Content-Type": "application/json" });
 			req.setRequestData(qx.lang.Json.stringify({
+				filter: this.__filter,
 				firstRow: firstRow,
 				lastRow: lastRow
 			}));
 
-			req.addListener("success", function (e) {
+			req.addListener("success", function(e) {
 				var rowData = e.getTarget().getResponse();
 				this._onRowDataLoaded(rowData);
 			}, this);

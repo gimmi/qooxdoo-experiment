@@ -15,7 +15,7 @@ qx.Class.define("trackr.test.DemoTest", {
 		},
 
 		"test: should do json encoded request with qx.io.request": function() {
-			var req = new qx.io.request.Xhr("/rpc?class=Trackr.TicketInfoRepository&method=GetAll", "PUT");
+			var req = new qx.io.request.Xhr("/rpc?class=Trackr.TaskInfoRepository&method=GetAll", "PUT");
 			req.setRequestHeaders({ "Content-Type" : "application/json" });
 			req.setRequestData(qx.lang.Json.stringify({ "par" : "Hello world" }));
 
@@ -32,7 +32,7 @@ qx.Class.define("trackr.test.DemoTest", {
 		},
 
 		"test: should do json encoded request with qx.io.remote": function() {
-			var req = new qx.io.remote.Request("/rpc?class=Trackr.TicketInfoRepository&method=GetAll", "POST", "application/json");
+			var req = new qx.io.remote.Request("/rpc?class=Trackr.TaskInfoRepository&method=GetAll", "POST", "application/json");
 			req.setRequestHeader("Content-Type", "application/json");
 			req.setData(qx.lang.Json.stringify({ "par" : "Hello world" }));
 
