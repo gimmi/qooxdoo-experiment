@@ -46,7 +46,7 @@ qx.Class.define("trackr.Application", {
 				var page = new qx.ui.tabview.Page("Search Task", "icon/16/actions/help-about.png");
 				page.setShowCloseButton(true);
 				page.setLayout(new qx.ui.layout.Canvas());
-				page.add(new trackr.view.SearchTaskWidget(), { edge : 0 });
+				page.add(new trackr.view.SearchTaskComposite(), { edge : 0 });
 				this.__tabview.add(page);
 			}, this);
 		}

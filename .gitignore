@@ -1,5 +1,17 @@
-/qooxdoo-*-sdk/
-/source/script/
-/test/
+# Managed by NuGet
+/lib/
+# Build output
+/build/
+# Standard VS.NET and ReSharper Foo
+/src/*/obj/
+/src/*/bin/
+/src/*.user
+/src/*.suo
+/src/SharedAssemblyInfo.cs
+/TestResult.xml
+/src/SampleWebApplication/extjs/
+src/ExtSamplesRunner/extjs/
+src/**/*.user
+# Intellij Idea
 /.idea/
 /*.iml
