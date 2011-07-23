@@ -1,6 +1,13 @@
 qx.Class.define("trackr.view.SearchTaskWidget", {
 	extend: qx.ui.core.Widget,
 
+properties : {
+	appearance : {
+		refine : true,
+		init: "search-task-widget"
+	}
+},
+
 	construct: function () {
 		this.base(arguments);
 
