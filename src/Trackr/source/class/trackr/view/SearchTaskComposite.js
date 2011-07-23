@@ -14,7 +14,7 @@ qx.Class.define("trackr.view.SearchTaskComposite", {
 		this._filterTextField = new qx.ui.form.TextField();
 		this._filterTextField.setWidth(300);
 		filterComposite.add(this._filterTextField, { row: 0, column: 1 });
-		var filterButton = new qx.ui.form.Button("Filter");
+		var filterButton = new qx.ui.form.Button("Apply/refresh");
 		filterButton.addListener("execute", this._filterButtonExecute, this);
 		filterComposite.add(filterButton, { row: 0, column: 2 });
 
