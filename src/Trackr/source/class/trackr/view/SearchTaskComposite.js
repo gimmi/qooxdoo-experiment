@@ -28,6 +28,10 @@ qx.Class.define("trackr.view.SearchTaskComposite", {
 		this._add(table, { flex: 1 });
 	},
 
+	events: {
+		"taskSelected": "qx.event.type.Data"
+	},
+
 	members: {
 		_taskInfoDataModel: null,
 
@@ -38,8 +42,11 @@ qx.Class.define("trackr.view.SearchTaskComposite", {
 			this._taskInfoDataModel.reloadData();
 		},
 
-		_tableCellDblClick: function () {
-			this.debug("_tableCellDblClick");
+		_tableCellDblClick: function (e) {
+			var table = e.getTarget();
+			var row = e.getRow();
+			this.debug("DblCliched row #" + row);
+			this.fireDataEvent("taskSelected", null);
 		}
 	},
 
