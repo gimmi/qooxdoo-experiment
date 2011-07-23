@@ -34,11 +34,9 @@
 
 			req.addListener("success", function (e) {
 				var rowData = e.getTarget().getResponse();
-				this.debug("data loaded");
 				this._onRowDataLoaded(rowData);
 			}, this);
 
-			this.debug("querying data");
 			req.send();
 		}
 	}
