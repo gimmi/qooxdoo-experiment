@@ -20,12 +20,16 @@ qx.Class.define("trackr.view.SearchTaskComposite", {
 
 		this._add(filterComposite, { flex: 0 });
 		this._taskInfoDataModel = new trackr.data.TaskInfoDataModel();
-		this._add(new qx.ui.table.Table(this._taskInfoDataModel), { flex: 1 });
+		var table = new qx.ui.table.Table(this._taskInfoDataModel);
+		table.setStatusBarVisible(false);
+		table.setShowCellFocusIndicator(false);
+		table.setColumnWidth(2, 300);
+		this._add(table, { flex: 1 });
 	},
 
 	members: {
 		_taskInfoDataModel: null,
-		
+
 		_filterTextField: null,
 
 		_filterButtonExecute: function (e) {
