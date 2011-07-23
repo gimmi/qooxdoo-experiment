@@ -5,10 +5,17 @@ namespace Trackr
 {
 	public class TicketInfoRepository
 	{
-		private readonly TicketInfo[] _ticketInfos = new[] {
-			new TicketInfo { Id = "1", Number = 1, Title = " Ticket #1" },
-			new TicketInfo { Id = "2", Number = 2, Title = " Ticket #2" }
-		};
+		private readonly TicketInfo[] _ticketInfos;
+
+		public TicketInfoRepository()
+		{
+			int n = 300;
+			_ticketInfos = new TicketInfo[n];
+			for(int i = 0; i < n; i++)
+			{
+				_ticketInfos[i] = new TicketInfo { Id = n.ToString(), Number = n, Title = "Ticket #" + i };
+			}
+		}
 
 		public int GetRowCount()
 		{
@@ -17,7 +24,7 @@ namespace Trackr
 
 		public IEnumerable<TicketInfo> GetRowData(int firstRow, int lastRow)
 		{
-			return _ticketInfos.Skip(firstRow).Take(lastRow - firstRow);
+			return _ticketInfos.Skip(firstRow).Take(lastRow - firstRow + 1);
 		}
 	}
 }
