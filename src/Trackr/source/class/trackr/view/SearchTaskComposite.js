@@ -24,7 +24,7 @@ qx.Class.define("trackr.view.SearchTaskComposite", {
 		table.setStatusBarVisible(false);
 		table.setShowCellFocusIndicator(false);
 		table.setColumnWidth(2, 300);
-		table.addListener("cellDblclick", this._tableCellDblClick, this);
+		table.addListener("cellDblclick", this._table_cellDblClick, this);
 		this._add(table, { flex: 1 });
 	},
 
@@ -42,11 +42,10 @@ qx.Class.define("trackr.view.SearchTaskComposite", {
 			this._taskInfoDataModel.reloadData();
 		},
 
-		_tableCellDblClick: function (e) {
-			var table = e.getTarget();
-			var row = e.getRow();
-			this.debug("DblCliched row #" + row);
-			this.fireDataEvent("taskSelected", null);
+		_table_cellDblClick: function (e) {
+			var rowIndex = e.getRow();
+			var taskId = this._taskInfoDataModel.getValueById("id", rowIndex);
+			this.fireDataEvent("taskSelected", taskId);
 		}
 	},
 
