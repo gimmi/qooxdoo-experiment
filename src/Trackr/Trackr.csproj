@@ -51,6 +51,7 @@
     <Content Include="source\class\trackr\theme\Decoration.js" />
     <Content Include="source\class\trackr\theme\Font.js" />
     <Content Include="source\class\trackr\theme\Theme.js" />
+    <Content Include="source\class\trackr\view\EditTaskComposite.js" />
     <Content Include="source\class\trackr\view\Header.js" />
     <Content Include="source\class\trackr\view\MainToolBar.js" />
     <Content Include="source\class\trackr\view\SearchTaskComposite.js" />

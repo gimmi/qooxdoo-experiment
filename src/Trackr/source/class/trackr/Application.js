@@ -43,19 +43,25 @@ qx.Class.define("trackr.Application", {
 		_createCommands: function () {
 			this.__commands.searchTasks = new qx.ui.core.Command("Control+F");
 			this.__commands.searchTasks.addListener("execute", function () {
-				var page = new qx.ui.tabview.Page("Search Task", "icon/16/actions/help-about.png");
-				page.setShowCloseButton(true);
-				page.setLayout(new qx.ui.layout.Canvas());
 				var searchTaskComposite = new trackr.view.SearchTaskComposite();
 				searchTaskComposite.addListener("taskSelected", this._searchTaskComposite_taskSelected, this);
-				page.add(searchTaskComposite, { edge: 0 });
-				this.__tabview.add(page);
+				this.__addTabviewPage("Search Task", "icon/16/actions/help-about.png", searchTaskComposite);
 			}, this);
+		},
+
+		__addTabviewPage: function (label, icon, layoutItem) {
+			var page = new qx.ui.tabview.Page(label, icon);
+			page.setShowCloseButton(true);
+			page.setLayout(new qx.ui.layout.Canvas());
+			page.add(layoutItem, { edge: 0 });
+			this.__tabview.add(page);
+			this.__tabview.setSelection([page]);
 		},
 
 		_searchTaskComposite_taskSelected: function (e) {
 			var taskId = e.getData();
-			this.debug("DblCliched ticket #" + taskId);
+			var etc = new trackr.view.EditTaskComposite(taskId);
+			this.__addTabviewPage("Task #" + taskId, "icon/16/actions/help-about.png", etc);
 		}
 	}
 });
