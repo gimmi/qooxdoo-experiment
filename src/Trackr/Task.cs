@@ -5,5 +5,6 @@ namespace Trackr
 		public string Id;
 		public int Number;
 		public string Title;
+		public string Description;
 	}
 }

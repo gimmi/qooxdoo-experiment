@@ -6,12 +6,31 @@
 
 		this._taskId = taskId;
 
-		var form = this.__createForm();
+		var form = new qx.ui.form.Form();
+
+		var idField = new qx.ui.form.TextField();
+		form.add(idField, "Id", null, "id");
+
+		var numberField = new qx.ui.form.Spinner();
+		form.add(numberField, "Number", null, "number");
+
+		var titleField = new qx.ui.form.TextField();
+		form.add(titleField, "Title", null, "title");
+
+		var descriptionField = new qx.ui.form.TextArea();
+		form.add(descriptionField, "Description", null, "description");
 
 		this._controller = new qx.data.controller.Form(null, form);
 
-		this._setLayout(new qx.ui.layout.Canvas());
-		this._add(new qx.ui.form.renderer.Single(form), { left: 10, top: 10 });
+		this._setLayout(new qx.ui.layout.VBox(10));
+		this._add(new qx.ui.form.renderer.Single(form), { flex: 0 });
+
+		var tabView = new qx.ui.tabview.TabView();
+		var descriptionTabPage = new qx.ui.tabview.Page("Description", "icon/16/actions/help-about.png");
+		descriptionTabPage.setLayout(new qx.ui.layout.Canvas());
+		descriptionTabPage.add(descriptionField, { edge: 0 });
+		tabView.add(descriptionTabPage);
+		this._add(tabView, { flex: 1 });
 
 		this.__loadTask();
 	},
@@ -34,21 +53,6 @@
 				}, this)
 			});
 			this._store.bind("model", this._controller, "model");
-		},
-
-		__createForm: function() {
-			var form = new qx.ui.form.Form();
-
-			var id = new qx.ui.form.TextField();
-			form.add(id, "Id", null, "id");
-
-			var number = new qx.ui.form.Spinner();
-			form.add(number, "Number", null, "number");
-
-			var title = new qx.ui.form.TextField();
-			form.add(title, "Title", null, "title");
-
-			return form;
 		}
 	}
 });
