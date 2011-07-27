@@ -65,6 +65,8 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TaskRepository.cs" />
+    <Compile Include="Task.cs" />
     <Compile Include="ObjectFactory.cs" />
     <Compile Include="ParameterValueParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
