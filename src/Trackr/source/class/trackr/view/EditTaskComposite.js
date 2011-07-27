@@ -15,6 +15,7 @@
 		var numberField = new qx.ui.form.Spinner();
 
 		var titleField = new qx.ui.form.TextField();
+		titleField.setRequired(true);
 
 		var descriptionField = new qx.ui.form.TextArea();
 
@@ -26,8 +27,12 @@
 		this._controller.addTarget(numberField, "value", "number", true);
 		this._controller.addTarget(titleField, "value", "title", true);
 		this._controller.addTarget(descriptionField, "value", "description", true);
-		
+
 		this._validationManager = new qx.ui.form.validation.Manager();
+		this._validationManager.add(idField);
+		this._validationManager.add(numberField);
+		this._validationManager.add(titleField);
+		this._validationManager.add(descriptionField);
 
 		this._add(new qx.ui.basic.Label("Number"), { row: 0, column: 0 });
 		this._add(numberField, { row: 0, column: 1 });
