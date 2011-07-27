@@ -9,26 +9,25 @@
 		mainGridLayout.setColumnFlex(3, 1);
 		mainGridLayout.setRowFlex(2, 1);
 		this._setLayout(mainGridLayout);
-		
-		var form = new qx.ui.form.Form();
 
 		var idField = new qx.ui.form.TextField();
-		form.add(idField, "Id", null, "id");
 
 		var numberField = new qx.ui.form.Spinner();
-		form.add(numberField, "Number", null, "number");
 
 		var titleField = new qx.ui.form.TextField();
-		form.add(titleField, "Title", null, "title");
 
 		var descriptionField = new qx.ui.form.TextArea();
-		form.add(descriptionField, "Description", null, "description");
 
 		var saveButton = new qx.ui.form.Button("Save");
 		saveButton.addListener("execute", this.__saveTask, this);
-		form.addButton(saveButton);
 
-		this._controller = new qx.data.controller.Form(null, form);
+		this._controller = new qx.data.controller.Object();
+		this._controller.addTarget(idField, "value", "id", true);
+		this._controller.addTarget(numberField, "value", "number", true);
+		this._controller.addTarget(titleField, "value", "title", true);
+		this._controller.addTarget(descriptionField, "value", "description", true);
+		
+		this._validationManager = new qx.ui.form.validation.Manager();
 
 		this._add(new qx.ui.basic.Label("Number"), { row: 0, column: 0 });
 		this._add(numberField, { row: 0, column: 1 });
@@ -51,6 +50,7 @@
 		_taskId: null,
 		_store: null,
 		_controller: null,
+		_validationManager: null,
 
 		__loadTask: function () {
 			if (this._store) {
@@ -68,7 +68,7 @@
 		},
 
 		__saveTask: function () {
-			if (!this._controller.getTarget().validate()) {
+			if (!this._validationManager.validate()) {
 				alert('invalid');
 				return;
 			}
@@ -81,7 +81,7 @@
 			req.addListener("success", function (e) {
 				var response = e.getTarget().getResponse();
 				if (!response.success) {
-					this._controller.getTarget().getValidationManager().setInvalidMessage(response.message);
+					this._validationManager.setInvalidMessage(response.message);
 				}
 			}, this);
 
