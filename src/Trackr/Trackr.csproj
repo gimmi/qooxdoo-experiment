@@ -52,6 +52,7 @@
     <Content Include="source\class\trackr\theme\Font.js" />
     <Content Include="source\class\trackr\theme\Theme.js" />
     <Content Include="source\class\trackr\view\EditTaskComposite.js" />
+    <Content Include="source\class\trackr\view\ErrorComposite.js" />
     <Content Include="source\class\trackr\view\Header.js" />
     <Content Include="source\class\trackr\view\MainToolBar.js" />
     <Content Include="source\class\trackr\view\SearchTaskComposite.js" />
@@ -89,7 +90,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>54697</DevelopmentServerPort>
+          <DevelopmentServerPort>53300</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>
