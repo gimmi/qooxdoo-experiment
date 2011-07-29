@@ -17,13 +17,8 @@
 			decorator: new qx.ui.decoration.Single(3, "solid", "black"),
 			minHeight: 200
 		});
-		this._errorWidget = new qx.ui.container.Composite(new qx.ui.layout.VBox(10));
-		this._errorWidget.setBackgroundColor("red");
-		this._errorWidget.setPadding(10, 10, 10, 10);
-		this._errorWidget.setDecorator(new qx.ui.decoration.Single(3, "solid", "black"));
-		this._errorWidget.add(new qx.ui.basic.Label("Errors"));
-		this._errorWidget.add(new qx.ui.basic.Label("Errors"));
-		this._errorWidget.add(new qx.ui.basic.Label("Errors"));
+		this._errorWidget = new trackr.view.ErrorComposite();
+		this._errorWidget.setErrors([ "Error", "Error", "Error" ]);
 		this._add(this._errorWidget, { flex: 0 });
 
 		var idField = new qx.ui.form.TextField();
