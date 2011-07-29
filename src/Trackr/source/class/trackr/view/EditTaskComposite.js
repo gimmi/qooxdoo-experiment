@@ -1,14 +1,23 @@
 ﻿qx.Class.define("trackr.view.EditTaskComposite", {
 	extend: qx.ui.container.Composite,
 
-	construct: function (taskId) {
+	construct: function(taskId) {
 		this.base(arguments);
 
 		this._taskId = taskId;
-		var mainGridLayout = new qx.ui.layout.Grid(10, 10);
-		mainGridLayout.setColumnFlex(3, 1);
-		mainGridLayout.setRowFlex(2, 1);
-		this._setLayout(mainGridLayout);
+		this._setLayout(new qx.ui.layout.VBox(10));
+
+		this._errorWidget = new qx.ui.basic.Label("Errors").set({
+			backgroundColor: "red",
+			decorator: new qx.ui.decoration.Single(3, "solid", "black")
+		});
+		
+		this._errorWidget = new qx.ui.core.Widget().set({
+			backgroundColor: "red",
+			decorator: new qx.ui.decoration.Single(3, "solid", "black"),
+			minHeight: 200
+		});
+		this._add(this._errorWidget, { flex: 0 });
 
 		var idField = new qx.ui.form.TextField();
 
@@ -33,20 +42,25 @@
 		this._validationManager.add(numberField);
 		this._validationManager.add(titleField);
 		this._validationManager.add(descriptionField);
+		this._validationManager.addListener("changeValid", function(e) {
+			alert(e.getTarget().getInvalidMessage());
+		}, this);
 
-		this._add(new qx.ui.basic.Label("Number"), { row: 0, column: 0 });
-		this._add(numberField, { row: 0, column: 1 });
-		this._add(new qx.ui.basic.Label("Title"), { row: 0, column: 2 });
-		this._add(titleField, { row: 0, column: 3 });
-
-		this._add(saveButton, { row: 1, column: 0 });
+		var headerComposite = new qx.ui.container.Composite();
+		headerComposite.setLayout(new qx.ui.layout.Grid(10, 10).setColumnFlex(3, 1));
+		headerComposite.add(new qx.ui.basic.Label("Number"), { row: 0, column: 0 });
+		headerComposite.add(numberField, { row: 0, column: 1 });
+		headerComposite.add(new qx.ui.basic.Label("Title"), { row: 0, column: 2 });
+		headerComposite.add(titleField, { row: 0, column: 3 });
+		headerComposite.add(saveButton, { row: 1, column: 0 });
+		this._add(headerComposite, { flex: 0 });
 
 		var tabView = new qx.ui.tabview.TabView();
 		var descriptionTabPage = new qx.ui.tabview.Page("Description", "icon/16/actions/help-about.png");
 		descriptionTabPage.setLayout(new qx.ui.layout.Canvas());
 		descriptionTabPage.add(descriptionField, { edge: 0 });
 		tabView.add(descriptionTabPage);
-		this._add(tabView, { row: 2, column: 0, colSpan: 4 });
+		this._add(tabView, { flex: 1 });
 
 		this.__loadTask();
 	},
@@ -56,14 +70,15 @@
 		_store: null,
 		_controller: null,
 		_validationManager: null,
+		_errorWidget: null,
 
-		__loadTask: function () {
+		__loadTask: function() {
 			if (this._store) {
 				this._store.reload();
 				return;
 			}
 			this._store = new qx.data.store.Json("/rpc?class=Trackr.TaskRepository&method=Load", {
-				configureRequest: qx.lang.Function.bind(function (req) {
+				configureRequest: qx.lang.Function.bind(function(req) {
 					req.setMethod("PUT");
 					req.setRequestHeaders({ "Content-Type": "application/json" });
 					req.setRequestData(qx.lang.Json.stringify({ taskId: this._taskId }));
@@ -72,7 +87,8 @@
 			this._store.bind("model", this._controller, "model");
 		},
 
-		__saveTask: function () {
+		__saveTask: function() {
+			// this._errorWidget.setVisibility("excluded");
 			if (!this._validationManager.validate()) {
 				alert('invalid');
 				return;
@@ -83,7 +99,7 @@
 				task: qx.util.Serializer.toNativeObject(this._store.getModel())
 			}));
 
-			req.addListener("success", function (e) {
+			req.addListener("success", function(e) {
 				var response = e.getTarget().getResponse();
 				if (!response.success) {
 					this._validationManager.setInvalidMessage(response.message);
