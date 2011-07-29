@@ -1,7 +1,7 @@
 ﻿qx.Class.define("trackr.view.EditTaskComposite", {
 	extend: qx.ui.container.Composite,
 
-	construct: function(taskId) {
+	construct: function (taskId) {
 		this.base(arguments);
 
 		this._taskId = taskId;
@@ -11,12 +11,19 @@
 			backgroundColor: "red",
 			decorator: new qx.ui.decoration.Single(3, "solid", "black")
 		});
-		
+
 		this._errorWidget = new qx.ui.core.Widget().set({
 			backgroundColor: "red",
 			decorator: new qx.ui.decoration.Single(3, "solid", "black"),
 			minHeight: 200
 		});
+		this._errorWidget = new qx.ui.container.Composite(new qx.ui.layout.VBox(10));
+		this._errorWidget.setBackgroundColor("red");
+		this._errorWidget.setPadding(10, 10, 10, 10);
+		this._errorWidget.setDecorator(new qx.ui.decoration.Single(3, "solid", "black"));
+		this._errorWidget.add(new qx.ui.basic.Label("Errors"));
+		this._errorWidget.add(new qx.ui.basic.Label("Errors"));
+		this._errorWidget.add(new qx.ui.basic.Label("Errors"));
 		this._add(this._errorWidget, { flex: 0 });
 
 		var idField = new qx.ui.form.TextField();
@@ -42,7 +49,7 @@
 		this._validationManager.add(numberField);
 		this._validationManager.add(titleField);
 		this._validationManager.add(descriptionField);
-		this._validationManager.addListener("changeValid", function(e) {
+		this._validationManager.addListener("changeValid", function (e) {
 			alert(e.getTarget().getInvalidMessage());
 		}, this);
 
@@ -72,13 +79,13 @@
 		_validationManager: null,
 		_errorWidget: null,
 
-		__loadTask: function() {
+		__loadTask: function () {
 			if (this._store) {
 				this._store.reload();
 				return;
 			}
 			this._store = new qx.data.store.Json("/rpc?class=Trackr.TaskRepository&method=Load", {
-				configureRequest: qx.lang.Function.bind(function(req) {
+				configureRequest: qx.lang.Function.bind(function (req) {
 					req.setMethod("PUT");
 					req.setRequestHeaders({ "Content-Type": "application/json" });
 					req.setRequestData(qx.lang.Json.stringify({ taskId: this._taskId }));
@@ -87,7 +94,7 @@
 			this._store.bind("model", this._controller, "model");
 		},
 
-		__saveTask: function() {
+		__saveTask: function () {
 			// this._errorWidget.setVisibility("excluded");
 			if (!this._validationManager.validate()) {
 				alert('invalid');
@@ -99,7 +106,7 @@
 				task: qx.util.Serializer.toNativeObject(this._store.getModel())
 			}));
 
-			req.addListener("success", function(e) {
+			req.addListener("success", function (e) {
 				var response = e.getTarget().getResponse();
 				if (!response.success) {
 					this._validationManager.setInvalidMessage(response.message);
