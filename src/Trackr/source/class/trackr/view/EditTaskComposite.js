@@ -16,8 +16,11 @@
 
 		var descriptionField = new qx.ui.form.TextArea();
 
-		var saveButton = new qx.ui.form.Button("Save");
+		var buttons = new qx.ui.container.Composite(new qx.ui.layout.HBox(10));
+		var saveButton = new qx.ui.form.Button("Save", "icon/16/actions/help-about.png");
 		saveButton.addListener("execute", this.__saveTask, this);
+		buttons.add(saveButton, { flex: 0 });
+		this._add(buttons, { flex: 0 });
 
 		this._controller = new qx.data.controller.Object();
 		this._controller.addTarget(idField, "value", "id", true);
@@ -30,7 +33,6 @@
 		headerComposite.add(numberField, { row: 0, column: 1 });
 		headerComposite.add(new qx.ui.basic.Label("Title"), { row: 0, column: 2 });
 		headerComposite.add(titleField, { row: 0, column: 3 });
-		headerComposite.add(saveButton, { row: 1, column: 0 });
 		this._add(headerComposite, { flex: 0 });
 
 		var tabView = new qx.ui.tabview.TabView();
