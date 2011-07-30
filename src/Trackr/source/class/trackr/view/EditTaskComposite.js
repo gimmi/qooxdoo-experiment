@@ -7,20 +7,6 @@
 		this._taskId = taskId;
 		this._setLayout(new qx.ui.layout.VBox(10));
 
-		this._errorWidget = new qx.ui.basic.Label("Errors").set({
-			backgroundColor: "red",
-			decorator: new qx.ui.decoration.Single(3, "solid", "black")
-		});
-
-		this._errorWidget = new qx.ui.core.Widget().set({
-			backgroundColor: "red",
-			decorator: new qx.ui.decoration.Single(3, "solid", "black"),
-			minHeight: 200
-		});
-		this._errorWidget = new trackr.view.ErrorComposite();
-		this._errorWidget.setErrors([ "Error", "Error", "Error" ]);
-		this._add(this._errorWidget, { flex: 0 });
-
 		var idField = new qx.ui.form.TextField();
 
 		var numberField = new qx.ui.form.Spinner();
@@ -39,17 +25,7 @@
 		this._controller.addTarget(titleField, "value", "title", true);
 		this._controller.addTarget(descriptionField, "value", "description", true);
 
-		this._validationManager = new qx.ui.form.validation.Manager();
-		this._validationManager.add(idField);
-		this._validationManager.add(numberField);
-		this._validationManager.add(titleField);
-		this._validationManager.add(descriptionField);
-		this._validationManager.addListener("changeValid", function (e) {
-			alert(e.getTarget().getInvalidMessage());
-		}, this);
-
-		var headerComposite = new qx.ui.container.Composite();
-		headerComposite.setLayout(new qx.ui.layout.Grid(10, 10).setColumnFlex(3, 1));
+		var headerComposite = new qx.ui.container.Composite(new qx.ui.layout.Grid(10, 10).setColumnFlex(3, 1));
 		headerComposite.add(new qx.ui.basic.Label("Number"), { row: 0, column: 0 });
 		headerComposite.add(numberField, { row: 0, column: 1 });
 		headerComposite.add(new qx.ui.basic.Label("Title"), { row: 0, column: 2 });
@@ -71,7 +47,6 @@
 		_taskId: null,
 		_store: null,
 		_controller: null,
-		_validationManager: null,
 		_errorWidget: null,
 
 		__loadTask: function () {
@@ -89,12 +64,21 @@
 			this._store.bind("model", this._controller, "model");
 		},
 
-		__saveTask: function () {
-			// this._errorWidget.setVisibility("excluded");
-			if (!this._validationManager.validate()) {
-				alert('invalid');
-				return;
+		__setErrors: function (errors) {
+			if (errors.length === 0) {
+				if (this._errorWidget) {
+					this.remove(this._errorWidget);
+				}
+			} else {
+				if (!this._errorWidget) {
+					this._errorWidget = new trackr.view.ErrorComposite();
+					this.addAt(this._errorWidget, 0, { flex: 0 });
+				}
+				this._errorWidget.setErrors(errors);
 			}
+		},
+
+		__saveTask: function () {
 			var req = new qx.io.request.Xhr("/rpc?class=Trackr.TaskRepository&method=Save", "PUT");
 			req.setRequestHeaders({ "Content-Type": "application/json" });
 			req.setRequestData(qx.lang.Json.stringify({
@@ -103,9 +87,7 @@
 
 			req.addListener("success", function (e) {
 				var response = e.getTarget().getResponse();
-				if (!response.success) {
-					this._validationManager.setInvalidMessage(response.message);
-				}
+				this.__setErrors(response.errors);
 			}, this);
 
 			req.send();
