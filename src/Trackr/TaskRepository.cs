@@ -19,8 +19,19 @@ namespace Trackr
 					Number = i,
 					Title = string.Format("Task #{0}", i),
 					Description = string.Format("Generated @{0}", DateTime.Now.TimeOfDay),
+					Comments = BuildComments(i)
 				};
 			}
+		}
+
+		private static List<Comment> BuildComments(int taskId)
+		{
+			var ret = new List<Comment>();
+			for (int i = 0; i < 100; i++)
+			{
+				ret.Add(new Comment {Id = "1", User = "Gimmi", Text = string.Format("Ticket #{0} comment {1}", taskId, i)});
+			}
+			return ret;
 		}
 
 		public Task Load(string taskId)
