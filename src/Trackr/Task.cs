@@ -10,5 +10,7 @@ namespace Trackr
 		public string Description;
 		public string Comment;
 		public IList<Comment> Comments = new List<Comment>();
+		public TaskState State;
+		public IList<TaskState> States;
 	}
 }

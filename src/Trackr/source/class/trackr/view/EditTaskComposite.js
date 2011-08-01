@@ -20,7 +20,11 @@
 
 		var commentsList = new qx.ui.form.List();
 		var commentsController = new qx.data.controller.List(null, commentsList, "text");
-		
+
+		var stateComboBox = new qx.ui.form.ComboBox();
+		stateComboBox.getChildControl("textfield").setReadOnly(true);
+		var statesController = new qx.data.controller.List(null, stateComboBox, "description");
+
 		var buttons = new qx.ui.container.Composite(new qx.ui.layout.HBox(10));
 		var saveButton = new qx.ui.form.Button("Save", "icon/16/actions/help-about.png");
 		saveButton.addListener("execute", this.__saveTask, this);
@@ -34,12 +38,15 @@
 		this._controller.addTarget(descriptionField, "value", "description", true);
 		this._controller.addTarget(commentField, "value", "comment", true);
 		this._controller.addTarget(commentsController, "model", "comments", true);
+		this._controller.addTarget(statesController, "model", "states", true);
 
 		var headerComposite = new qx.ui.container.Composite(new qx.ui.layout.Grid(10, 10).setColumnFlex(3, 1));
 		headerComposite.add(new qx.ui.basic.Label("Number"), { row: 0, column: 0 });
 		headerComposite.add(numberField, { row: 0, column: 1 });
 		headerComposite.add(new qx.ui.basic.Label("Title"), { row: 0, column: 2 });
 		headerComposite.add(titleField, { row: 0, column: 3 });
+		headerComposite.add(new qx.ui.basic.Label("State"), { row: 1, column: 0 });
+		headerComposite.add(stateComboBox, { row: 1, column: 1 });
 		this._add(headerComposite, { flex: 0 });
 
 		var tabView = new qx.ui.tabview.TabView();

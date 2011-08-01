@@ -8,6 +8,12 @@ namespace Trackr
 	{
 		private readonly Task[] _tasks;
 
+		private readonly IList<TaskState> _states = new List<TaskState> {
+			new TaskState { Id = "1", Description = "Open" },
+			new TaskState { Id = "2", Description = "Closed" },
+			new TaskState { Id = "3", Description = "Test" },
+		};
+
 		public TaskRepository()
 		{
 			int n = 300;
@@ -19,7 +25,9 @@ namespace Trackr
 					Number = i,
 					Title = string.Format("Task #{0}", i),
 					Description = string.Format("Generated @{0}", DateTime.Now.TimeOfDay),
-					Comments = BuildComments(i)
+					Comments = BuildComments(i),
+					State = _states[0],
+					States = _states
 				};
 			}
 		}
