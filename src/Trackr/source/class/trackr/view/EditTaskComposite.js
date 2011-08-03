@@ -37,16 +37,17 @@
 		buttons.add(saveButton, { flex: 0 });
 		this._add(buttons, { flex: 0 });
 
-		this._controller = new qx.data.controller.Object();
-		this._controller.addTarget(idField, "value", "id", true);
-		this._controller.addTarget(numberField, "value", "number", true);
-		this._controller.addTarget(titleField, "value", "title", true);
-		this._controller.addTarget(descriptionField, "value", "description", true);
-		this._controller.addTarget(commentField, "value", "comment", true);
-		this._controller.addTarget(commentsController, "model", "comments", true);
-		this._controller.addTarget(statesController, "model", "states", true);
-		this._controller.addTarget(statesController, "selection[0]", "stateId", true);
-		this._loadRequest.bind("model", this._controller, "model");
+		var controller = new qx.data.controller.Object();
+		controller.addTarget(idField, "value", "id", true);
+		controller.addTarget(numberField, "value", "number", true);
+		controller.addTarget(titleField, "value", "title", true);
+		controller.addTarget(descriptionField, "value", "description", true);
+		controller.addTarget(commentField, "value", "comment", true);
+		controller.addTarget(commentsController, "model", "comments", true);
+		controller.addTarget(statesController, "model", "states", true);
+		controller.addTarget(statesController, "selection[0]", "stateId", true);
+		
+		this._loadRequest.bind("model", controller, "model");
 
 		var headerComposite = new qx.ui.container.Composite(new qx.ui.layout.Grid(10, 10).setColumnFlex(3, 1));
 		headerComposite.add(new qx.ui.basic.Label("Number"), { row: 0, column: 0 });
@@ -77,7 +78,6 @@
 	members: {
 		_taskId: null,
 		_loadRequest: null,
-		_controller: null,
 		_errorWidget: null,
 
 		__setErrors: function (errors) {
