@@ -22,8 +22,7 @@
 		var commentsController = new qx.data.controller.List(null, commentsList, "text");
 
 		var stateComboBox = new qx.ui.form.SelectBox(); // support qx.ui.core.ISingleSelection
-		// stateComboBox.getChildControl("textfield").setReadOnly(true);
-		var statesController = this.__statesController = new qx.data.controller.List(null, stateComboBox);
+		var statesController = new qx.data.controller.List(null, stateComboBox);
 		statesController.setDelegate({
 			bindItem: function(controller, item, index) {
 				controller.bindProperty("id", "model", null, item, index);
