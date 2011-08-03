@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="source\class\trackr\Application.js" />
+    <Content Include="source\class\trackr\data\Request.js" />
     <Content Include="source\class\trackr\data\TaskInfoDataModel.js" />
     <Content Include="source\class\trackr\simulation\DemoSimulation.js" />
     <Content Include="source\class\trackr\test\DemoTest.js" />
