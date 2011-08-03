@@ -4,7 +4,6 @@
 	construct: function (taskId) {
 		this.base(arguments);
 
-		this._taskId = taskId;
 		this._loadRequest = new trackr.data.Request("Trackr.TaskRepository", "Load");
 		this._setLayout(new qx.ui.layout.VBox(10));
 
@@ -72,11 +71,10 @@
 		tabView.add(commentsTabPage);
 		this._add(tabView, { flex: 1 });
 
-		this._loadRequest.send({ taskId: this._taskId });
+		this._loadRequest.send({ taskId: taskId });
 	},
 
 	members: {
-		_taskId: null,
 		_loadRequest: null,
 		_errorWidget: null,
 
