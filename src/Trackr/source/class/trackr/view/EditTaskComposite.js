@@ -1,7 +1,7 @@
 ﻿qx.Class.define("trackr.view.EditTaskComposite", {
 	extend: qx.ui.container.Composite,
 
-	construct: function (taskId) {
+	construct: function(taskId) {
 		this.base(arguments);
 
 		this._taskId = taskId;
@@ -21,9 +21,15 @@
 		var commentsList = new qx.ui.form.List();
 		var commentsController = new qx.data.controller.List(null, commentsList, "text");
 
-		var stateComboBox = new qx.ui.form.ComboBox();
-		stateComboBox.getChildControl("textfield").setReadOnly(true);
-		var statesController = new qx.data.controller.List(null, stateComboBox, "description");
+		var stateComboBox = new qx.ui.form.SelectBox(); // support qx.ui.core.ISingleSelection
+		// stateComboBox.getChildControl("textfield").setReadOnly(true);
+		var statesController = this.__statesController = new qx.data.controller.List(null, stateComboBox);
+		statesController.setDelegate({
+			bindItem: function(controller, item, index) {
+				controller.bindProperty("id", "model", null, item, index);
+				controller.bindProperty("description", "label", controller.getLabelOptions(), item, index);
+			}
+		});
 
 		var buttons = new qx.ui.container.Composite(new qx.ui.layout.HBox(10));
 		var saveButton = new qx.ui.form.Button("Save", "icon/16/actions/help-about.png");
@@ -39,6 +45,7 @@
 		this._controller.addTarget(commentField, "value", "comment", true);
 		this._controller.addTarget(commentsController, "model", "comments", true);
 		this._controller.addTarget(statesController, "model", "states", true);
+		this._controller.addTarget(statesController, "selection[0]", "stateId", true);
 
 		var headerComposite = new qx.ui.container.Composite(new qx.ui.layout.Grid(10, 10).setColumnFlex(3, 1));
 		headerComposite.add(new qx.ui.basic.Label("Number"), { row: 0, column: 0 });
@@ -72,13 +79,13 @@
 		_controller: null,
 		_errorWidget: null,
 
-		__loadTask: function () {
+		__loadTask: function() {
 			if (this._store) {
 				this._store.reload();
 				return;
 			}
 			this._store = new qx.data.store.Json("/rpc?class=Trackr.TaskRepository&method=Load", {
-				configureRequest: qx.lang.Function.bind(function (req) {
+				configureRequest: qx.lang.Function.bind(function(req) {
 					req.setMethod("PUT");
 					req.setRequestHeaders({ "Content-Type": "application/json" });
 					req.setRequestData(qx.lang.Json.stringify({ taskId: this._taskId }));
@@ -87,7 +94,7 @@
 			this._store.bind("model", this._controller, "model");
 		},
 
-		__setErrors: function (errors) {
+		__setErrors: function(errors) {
 			if (errors.length === 0) {
 				if (this._errorWidget) {
 					this.remove(this._errorWidget);
@@ -101,14 +108,14 @@
 			}
 		},
 
-		__saveTask: function () {
+		__saveTask: function() {
 			var req = new qx.io.request.Xhr("/rpc?class=Trackr.TaskRepository&method=Save", "PUT");
 			req.setRequestHeaders({ "Content-Type": "application/json" });
 			req.setRequestData(qx.lang.Json.stringify({
 				task: qx.util.Serializer.toNativeObject(this._store.getModel())
 			}));
 
-			req.addListener("success", function (e) {
+			req.addListener("success", function(e) {
 				var response = e.getTarget().getResponse();
 				this.__setErrors(response.errors);
 			}, this);

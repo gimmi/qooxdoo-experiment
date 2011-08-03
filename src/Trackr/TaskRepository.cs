@@ -26,7 +26,7 @@ namespace Trackr
 					Title = string.Format("Task #{0}", i),
 					Description = string.Format("Generated @{0}", DateTime.Now.TimeOfDay),
 					Comments = BuildComments(i),
-					State = _states[0],
+					StateId = _states[1].Id,
 					States = _states
 				};
 			}
