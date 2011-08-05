@@ -1,6 +1,8 @@
 ﻿qx.Class.define("trackr.view.EditTaskComposite", {
 	extend: qx.ui.container.Composite,
 
+	implement: [trackr.IDocument],
+
 	construct: function (taskId) {
 		this.base(arguments);
 
@@ -103,6 +105,21 @@
 			req.send({ task: this._loadRequest.getResponse() }, function (response) {
 				this.__setErrors(response.getErrors());
 			}, this);
+		},
+
+		// trackr.IDocument implementation
+		getDocumentToolBarPart: function () {
+			if (!this._toolBarPart) {
+				var part = new qx.ui.toolbar.Part();
+				part.add(new qx.ui.toolbar.Button("Save", "icon/16/actions/help-about.png"));
+			}
+			return this._toolBarPart;
+		},
+		getDocumentTitle: function () {
+			return "Task #";
+		},
+		getDocumentIcon: function () {
+			return "icon/16/actions/help-about.png";
 		}
 	}
 });

@@ -1,6 +1,7 @@
 /* ************************************************************************
  #asset(trackr/*)
  #asset(qx/icon/Tango/16/actions/help-about.png)
+ #asset(qx/icon/Tango/22/actions/system-search.png)
  ************************************************************************ */
 qx.Class.define("trackr.Application", {
 	extend: qx.application.Standalone,
@@ -28,9 +29,17 @@ qx.Class.define("trackr.Application", {
 		_createLayout: function () {
 			var dockLayoutComposite = new qx.ui.container.Composite(new qx.ui.layout.Dock());
 			dockLayoutComposite.add(new trackr.view.Header(), { edge: "north" });
-			dockLayoutComposite.add(new trackr.view.MainToolBar(this), { edge: "north" });
+
+			var toolbar = new qx.ui.toolbar.ToolBar();
+			toolbar.add(new qx.ui.toolbar.Button("Search Task", "icon/22/actions/system-search.png",  this.getCommand("searchTasks")));
+
+			dockLayoutComposite.add(toolbar, { edge: "north" });
 
 			this.__tabview = new qx.ui.tabview.TabView();
+//			this.__tabview.addListener("changeSelection", function (e) {
+//				var oldPage = e.getOldData().getChildren().getItem(0);
+//				var newPage = e.getData().getChildren().getItem(0);
+//			}, this);
 			var welcomePage = new qx.ui.tabview.Page("Welcome", "icon/16/actions/help-about.png");
 			welcomePage.setLayout(new qx.ui.layout.VBox());
 			welcomePage.add(new qx.ui.basic.Label("Welcome to Trackr!"));
