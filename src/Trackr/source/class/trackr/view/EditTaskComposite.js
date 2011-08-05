@@ -35,12 +35,12 @@
 			}
 		});
 
-		var buttons = new qx.ui.container.Composite(new qx.ui.layout.HBox(10));
-		var saveButton = new qx.ui.form.Button("Save", "icon/16/actions/help-about.png");
+		
+		this._toolBarPart = new qx.ui.toolbar.Part();
+		var saveButton = new qx.ui.toolbar.Button("Save", "icon/16/actions/help-about.png");
 		saveButton.addListener("execute", this.__saveTask, this);
-		buttons.add(saveButton, { flex: 0 });
-		this._add(buttons, { flex: 0 });
-
+		this._toolBarPart.add(saveButton);
+		
 		var controller = new qx.data.controller.Object();
 		controller.addTarget(idField, "value", "id", true);
 		controller.addTarget(numberField, "value", "number", true);
@@ -82,6 +82,7 @@
 	members: {
 		_loadRequest: null,
 		_errorWidget: null,
+		_toolBarPart: null,
 
 		__setErrors: function(errors) {
 			if (errors.length === 0) {
@@ -109,10 +110,6 @@
 
 		// override trackr.IDocument
 		getDocumentToolBarPart: function() {
-			if (!this._toolBarPart) {
-				this._toolBarPart = new qx.ui.toolbar.Part();
-				this._toolBarPart.add(new qx.ui.toolbar.Button("Save", "icon/16/actions/help-about.png"));
-			}
 			return this._toolBarPart;
 		},
 
