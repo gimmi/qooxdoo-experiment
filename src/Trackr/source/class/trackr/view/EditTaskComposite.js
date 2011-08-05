@@ -111,7 +111,7 @@
 				requestConverter: trackr.data.Request.TO_NATIVE_CONVERTER,
 				responseConverter: trackr.data.Request.TO_MODEL_CONVERTER
 			});
-			req.send({ task: this._loadRequest.getResponse() }, function (response) {
+			req.send({ task: this.getModel() }, function (response) {
 				this.__setErrors(response.getErrors());
 			}, this);
 		},
