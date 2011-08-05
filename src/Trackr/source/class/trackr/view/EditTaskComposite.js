@@ -4,9 +4,10 @@
 	construct: function (taskId) {
 		this.base(arguments);
 
-		this._loadRequest = new trackr.data.Request("Trackr.TaskRepository", "Load");
-		this._loadRequest.setRequestConverter(trackr.data.Request.TO_NATIVE_CONVERTER);
-		this._loadRequest.setResponseConverter(trackr.data.Request.TO_MODEL_CONVERTER);
+		this._loadRequest = new trackr.data.Request("Trackr.TaskRepository", "Load").set({
+			requestConverter: trackr.data.Request.TO_NATIVE_CONVERTER,
+			responseConverter: trackr.data.Request.TO_MODEL_CONVERTER
+		});
 		this._setLayout(new qx.ui.layout.VBox(10));
 
 		var idField = new qx.ui.form.TextField();
@@ -95,9 +96,10 @@
 		},
 
 		__saveTask: function () {
-			var req = new trackr.data.Request("Trackr.TaskRepository", "Save");
-			req.setRequestConverter(trackr.data.Request.TO_NATIVE_CONVERTER);
-			req.setResponseConverter(trackr.data.Request.TO_MODEL_CONVERTER);
+			var req = new trackr.data.Request("Trackr.TaskRepository", "Save").set({
+				requestConverter: trackr.data.Request.TO_NATIVE_CONVERTER,
+				responseConverter: trackr.data.Request.TO_MODEL_CONVERTER
+			});
 			req.send({ task: this._loadRequest.getResponse() }, function (response) {
 				this.__setErrors(response.getErrors());
 			}, this);
