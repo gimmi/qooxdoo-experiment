@@ -46,6 +46,7 @@
     <Content Include="source\class\trackr\data\Request.js" />
     <Content Include="source\class\trackr\data\TaskInfoDataModel.js" />
     <Content Include="source\class\trackr\simulation\DemoSimulation.js" />
+    <Content Include="source\class\trackr\test\data\RequestTest.js" />
     <Content Include="source\class\trackr\test\DemoTest.js" />
     <Content Include="source\class\trackr\theme\Appearance.js" />
     <Content Include="source\class\trackr\theme\Color.js" />
