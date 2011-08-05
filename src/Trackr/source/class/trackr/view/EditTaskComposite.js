@@ -5,6 +5,8 @@
 		this.base(arguments);
 
 		this._loadRequest = new trackr.data.Request("Trackr.TaskRepository", "Load");
+		this._loadRequest.setRequestConverter(trackr.data.Request.TO_NATIVE_CONVERTER);
+		this._loadRequest.setResponseConverter(trackr.data.Request.TO_MODEL_CONVERTER);
 		this._setLayout(new qx.ui.layout.VBox(10));
 
 		var idField = new qx.ui.form.TextField();
@@ -45,8 +47,8 @@
 		controller.addTarget(commentsController, "model", "comments", true);
 		controller.addTarget(statesController, "model", "states", true);
 		controller.addTarget(statesController, "selection[0]", "stateId", true);
-		
-		this._loadRequest.bind("model", controller, "model");
+
+		this._loadRequest.bind("response", controller, "model");
 
 		var headerComposite = new qx.ui.container.Composite(new qx.ui.layout.Grid(10, 10).setColumnFlex(3, 1));
 		headerComposite.add(new qx.ui.basic.Label("Number"), { row: 0, column: 0 });
@@ -94,7 +96,9 @@
 
 		__saveTask: function () {
 			var req = new trackr.data.Request("Trackr.TaskRepository", "Save");
-			req.send({ task: this._loadRequest.getModel() }, function (response) {
+			req.setRequestConverter(trackr.data.Request.TO_NATIVE_CONVERTER);
+			req.setResponseConverter(trackr.data.Request.TO_MODEL_CONVERTER);
+			req.send({ task: this._loadRequest.getResponse() }, function (response) {
 				this.__setErrors(response.getErrors());
 			}, this);
 		}

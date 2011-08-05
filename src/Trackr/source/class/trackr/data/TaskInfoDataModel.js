@@ -17,36 +17,22 @@
 		
 		// override
 		_loadRowCount: function() {
-			var req = new qx.io.request.Xhr("/rpc?class=Trackr.TaskRepository&method=GetRowCount", "PUT");
-			req.setRequestHeaders({ "Content-Type": "application/json" });
-			req.setRequestData(qx.lang.Json.stringify({
-				filter: this.__filter
-			}));
-
-			req.addListener("success", function(e) {
-				var rowCount = e.getTarget().getResponse();
+			var req = new trackr.data.Request("Trackr.TaskRepository", "GetRowCount");
+			req.send({ filter: this.__filter }, function(rowCount) {
 				this._onRowCountLoaded(rowCount);
 			}, this);
-
-			req.send();
 		},
 
 		// override
 		_loadRowData: function(firstRow, lastRow) {
-			var req = new qx.io.request.Xhr("/rpc?class=Trackr.TaskRepository&method=GetRowData", "PUT");
-			req.setRequestHeaders({ "Content-Type": "application/json" });
-			req.setRequestData(qx.lang.Json.stringify({
+			var req = new trackr.data.Request("Trackr.TaskRepository", "GetRowData");
+			req.send({
 				filter: this.__filter,
 				firstRow: firstRow,
 				lastRow: lastRow
-			}));
-
-			req.addListener("success", function(e) {
-				var rowData = e.getTarget().getResponse();
+			}, function(rowData) {
 				this._onRowDataLoaded(rowData);
 			}, this);
-
-			req.send();
 		}
 	}
 });
