@@ -3,13 +3,13 @@
 
 	implement: [trackr.IDocument],
 
-	construct: function(taskId) {
+	properties: {
+		model: { nullable: true, event: "changeModel" }
+	},
+
+	construct: function (taskId) {
 		this.base(arguments);
 
-		this._loadRequest = new trackr.data.Request("Trackr.TaskRepository", "Load").set({
-			requestConverter: trackr.data.Request.TO_NATIVE_CONVERTER,
-			responseConverter: trackr.data.Request.TO_MODEL_CONVERTER
-		});
 		this._setLayout(new qx.ui.layout.VBox(10));
 
 		var idField = new qx.ui.form.TextField();
@@ -29,18 +29,17 @@
 		var stateComboBox = new qx.ui.form.SelectBox(); // support qx.ui.core.ISingleSelection
 		var statesController = new qx.data.controller.List(null, stateComboBox);
 		statesController.setDelegate({
-			bindItem: function(controller, item, index) {
+			bindItem: function (controller, item, index) {
 				controller.bindProperty("id", "model", null, item, index);
 				controller.bindProperty("description", "label", controller.getLabelOptions(), item, index);
 			}
 		});
 
-		
 		this._toolBarPart = new qx.ui.toolbar.Part();
 		var saveButton = new qx.ui.toolbar.Button("Save", "icon/16/actions/help-about.png");
 		saveButton.addListener("execute", this.__saveTask, this);
 		this._toolBarPart.add(saveButton);
-		
+
 		var controller = new qx.data.controller.Object();
 		controller.addTarget(idField, "value", "id", true);
 		controller.addTarget(numberField, "value", "number", true);
@@ -51,7 +50,7 @@
 		controller.addTarget(statesController, "model", "states", true);
 		controller.addTarget(statesController, "selection[0]", "stateId", true);
 
-		this._loadRequest.bind("response", controller, "model");
+		this.bind("model", controller, "model");
 
 		var headerComposite = new qx.ui.container.Composite(new qx.ui.layout.Grid(10, 10).setColumnFlex(3, 1));
 		headerComposite.add(new qx.ui.basic.Label("Number"), { row: 0, column: 0 });
@@ -76,15 +75,14 @@
 		tabView.add(commentsTabPage);
 		this._add(tabView, { flex: 1 });
 
-		this._loadRequest.send({ taskId: taskId });
+		this.__loadTask(taskId);
 	},
 
 	members: {
-		_loadRequest: null,
 		_errorWidget: null,
 		_toolBarPart: null,
 
-		__setErrors: function(errors) {
+		__setErrors: function (errors) {
 			if (errors.length === 0) {
 				if (this._errorWidget) {
 					this.remove(this._errorWidget);
@@ -98,28 +96,38 @@
 			}
 		},
 
-		__saveTask: function() {
+		__loadTask: function (taskId) {
+			var req = new trackr.data.Request("Trackr.TaskRepository", "Load").set({
+				requestConverter: trackr.data.Request.TO_NATIVE_CONVERTER,
+				responseConverter: trackr.data.Request.TO_MODEL_CONVERTER
+			});
+			req.send({ taskId: taskId }, function (response) {
+				this.setModel(response);
+			}, this);
+		},
+
+		__saveTask: function () {
 			var req = new trackr.data.Request("Trackr.TaskRepository", "Save").set({
 				requestConverter: trackr.data.Request.TO_NATIVE_CONVERTER,
 				responseConverter: trackr.data.Request.TO_MODEL_CONVERTER
 			});
-			req.send({ task: this._loadRequest.getResponse() }, function(response) {
+			req.send({ task: this._loadRequest.getResponse() }, function (response) {
 				this.__setErrors(response.getErrors());
 			}, this);
 		},
 
 		// override trackr.IDocument
-		getDocumentToolBarPart: function() {
+		getDocumentToolBarPart: function () {
 			return this._toolBarPart;
 		},
 
 		// override trackr.IDocument
-		getDocumentTitle: function() {
+		getDocumentTitle: function () {
 			return "Task #";
 		},
 
 		// override trackr.IDocument
-		getDocumentIcon: function() {
+		getDocumentIcon: function () {
 			return "icon/16/actions/help-about.png";
 		}
 	}
