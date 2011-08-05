@@ -9,6 +9,7 @@ qx.Class.define("trackr.Application", {
 	members: {
 		__commands: {},
 		__tabView: null,
+		__toolbar: null,
 
 		main: function () {
 			this.base(arguments);
@@ -30,23 +31,33 @@ qx.Class.define("trackr.Application", {
 			var dockLayoutComposite = new qx.ui.container.Composite(new qx.ui.layout.Dock());
 			dockLayoutComposite.add(new trackr.view.Header(), { edge: "north" });
 
-			var toolbar = new qx.ui.toolbar.ToolBar();
-			toolbar.add(new qx.ui.toolbar.Button("Search Task", "icon/22/actions/system-search.png",  this.getCommand("searchTasks")));
+			this.__toolbar = new qx.ui.toolbar.ToolBar();
+			this.__toolbar.add(new qx.ui.toolbar.Button("Search Task", "icon/22/actions/system-search.png", this.getCommand("searchTasks")));
 
-			dockLayoutComposite.add(toolbar, { edge: "north" });
+			dockLayoutComposite.add(this.__toolbar, { edge: "north" });
 
-			this.__tabview = new qx.ui.tabview.TabView();
-//			this.__tabview.addListener("changeSelection", function (e) {
-//				var oldPage = e.getOldData().getChildren().getItem(0);
-//				var newPage = e.getData().getChildren().getItem(0);
-//			}, this);
+			this.__tabView = new qx.ui.tabview.TabView();
+			this.__tabView.addListener("changeSelection", function (e) {
+				this._switchPage(e.getOldData()[0], e.getData()[0]);
+			}, this);
 			var welcomePage = new qx.ui.tabview.Page("Welcome", "icon/16/actions/help-about.png");
 			welcomePage.setLayout(new qx.ui.layout.VBox());
 			welcomePage.add(new qx.ui.basic.Label("Welcome to Trackr!"));
-			this.__tabview.add(welcomePage);
-			dockLayoutComposite.add(this.__tabview, { edge: "center" });
+			this.__tabView.add(welcomePage);
+			dockLayoutComposite.add(this.__tabView, { edge: "center" });
 
 			this.getRoot().add(dockLayoutComposite, { edge: 0 });
+		},
+
+		_switchPage: function (oldPage, newPage) {
+			var oldPageToolbarPart = oldPage ? oldPage.getUserData("trackr.IDocument#documentToolBarPart") : null;
+			var newPageToolbarPart = newPage ? newPage.getUserData("trackr.IDocument#documentToolBarPart") : null;
+			if (oldPageToolbarPart) {
+				this.__toolbar.remove(oldPageToolbarPart);
+			}
+			if (newPageToolbarPart) {
+				this.__toolbar.add(newPageToolbarPart);
+			}
 		},
 
 		_createCommands: function () {
@@ -63,8 +74,11 @@ qx.Class.define("trackr.Application", {
 			page.setShowCloseButton(true);
 			page.setLayout(new qx.ui.layout.Canvas());
 			page.add(layoutItem, { edge: 0 });
-			this.__tabview.add(page);
-			this.__tabview.setSelection([page]);
+			if (qx.Class.hasInterface(layoutItem.constructor, trackr.IDocument)) {
+				page.setUserData("trackr.IDocument#documentToolBarPart", layoutItem.getDocumentToolBarPart());
+			}
+			this.__tabView.add(page);
+			this.__tabView.setSelection([page]);
 		},
 
 		_searchTaskComposite_taskSelected: function (e) {

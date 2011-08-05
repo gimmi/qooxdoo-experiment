@@ -3,7 +3,7 @@
 
 	implement: [trackr.IDocument],
 
-	construct: function (taskId) {
+	construct: function(taskId) {
 		this.base(arguments);
 
 		this._loadRequest = new trackr.data.Request("Trackr.TaskRepository", "Load").set({
@@ -29,7 +29,7 @@
 		var stateComboBox = new qx.ui.form.SelectBox(); // support qx.ui.core.ISingleSelection
 		var statesController = new qx.data.controller.List(null, stateComboBox);
 		statesController.setDelegate({
-			bindItem: function (controller, item, index) {
+			bindItem: function(controller, item, index) {
 				controller.bindProperty("id", "model", null, item, index);
 				controller.bindProperty("description", "label", controller.getLabelOptions(), item, index);
 			}
@@ -83,7 +83,7 @@
 		_loadRequest: null,
 		_errorWidget: null,
 
-		__setErrors: function (errors) {
+		__setErrors: function(errors) {
 			if (errors.length === 0) {
 				if (this._errorWidget) {
 					this.remove(this._errorWidget);
@@ -97,28 +97,32 @@
 			}
 		},
 
-		__saveTask: function () {
+		__saveTask: function() {
 			var req = new trackr.data.Request("Trackr.TaskRepository", "Save").set({
 				requestConverter: trackr.data.Request.TO_NATIVE_CONVERTER,
 				responseConverter: trackr.data.Request.TO_MODEL_CONVERTER
 			});
-			req.send({ task: this._loadRequest.getResponse() }, function (response) {
+			req.send({ task: this._loadRequest.getResponse() }, function(response) {
 				this.__setErrors(response.getErrors());
 			}, this);
 		},
 
-		// trackr.IDocument implementation
-		getDocumentToolBarPart: function () {
+		// override trackr.IDocument
+		getDocumentToolBarPart: function() {
 			if (!this._toolBarPart) {
-				var part = new qx.ui.toolbar.Part();
-				part.add(new qx.ui.toolbar.Button("Save", "icon/16/actions/help-about.png"));
+				this._toolBarPart = new qx.ui.toolbar.Part();
+				this._toolBarPart.add(new qx.ui.toolbar.Button("Save", "icon/16/actions/help-about.png"));
 			}
 			return this._toolBarPart;
 		},
-		getDocumentTitle: function () {
+
+		// override trackr.IDocument
+		getDocumentTitle: function() {
 			return "Task #";
 		},
-		getDocumentIcon: function () {
+
+		// override trackr.IDocument
+		getDocumentIcon: function() {
 			return "icon/16/actions/help-about.png";
 		}
 	}
