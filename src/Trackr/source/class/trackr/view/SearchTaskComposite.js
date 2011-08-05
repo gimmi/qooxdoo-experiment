@@ -1,6 +1,8 @@
 qx.Class.define("trackr.view.SearchTaskComposite", {
 	extend: qx.ui.container.Composite,
 
+	implement: [trackr.IDocument],
+
 	construct: function () {
 		this.base(arguments);
 
@@ -46,6 +48,21 @@ qx.Class.define("trackr.view.SearchTaskComposite", {
 			var rowIndex = e.getRow();
 			var taskId = this._taskInfoDataModel.getValueById("id", rowIndex);
 			this.fireDataEvent("taskSelected", taskId);
+		},
+
+		// override trackr.IDocument
+		getDocumentToolBarPart: function () {
+			return null;
+		},
+
+		// override trackr.IDocument
+		getDocumentTitle: function () {
+			return "Search Task";
+		},
+
+		// override trackr.IDocument
+		getDocumentIcon: function () {
+			return "icon/16/actions/help-about.png";
 		}
 	},
 

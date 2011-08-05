@@ -65,16 +65,18 @@ qx.Class.define("trackr.Application", {
 			this.__commands.searchTasks.addListener("execute", function () {
 				var searchTaskComposite = new trackr.view.SearchTaskComposite();
 				searchTaskComposite.addListener("taskSelected", this._searchTaskComposite_taskSelected, this);
-				this.__addTabviewPage("Search Task", "icon/16/actions/help-about.png", searchTaskComposite);
+				this.__addTabviewPage(searchTaskComposite);
 			}, this);
 		},
 
-		__addTabviewPage: function (label, icon, layoutItem) {
-			var page = new qx.ui.tabview.Page(label, icon);
+		__addTabviewPage: function (layoutItem) {
+			var page = new qx.ui.tabview.Page("Unknown", "icon/16/actions/help-about.png");
 			page.setShowCloseButton(true);
 			page.setLayout(new qx.ui.layout.Canvas());
 			page.add(layoutItem, { edge: 0 });
 			if (qx.Class.hasInterface(layoutItem.constructor, trackr.IDocument)) {
+				page.setLabel(layoutItem.getDocumentTitle());
+				page.setIcon(layoutItem.getDocumentIcon());
 				page.setUserData("trackr.IDocument#documentToolBarPart", layoutItem.getDocumentToolBarPart());
 			}
 			this.__tabView.add(page);
@@ -84,7 +86,7 @@ qx.Class.define("trackr.Application", {
 		_searchTaskComposite_taskSelected: function (e) {
 			var taskId = e.getData();
 			var etc = new trackr.view.EditTaskComposite(taskId);
-			this.__addTabviewPage("Task #" + taskId, "icon/16/actions/help-about.png", etc);
+			this.__addTabviewPage(etc);
 		}
 	}
 });
