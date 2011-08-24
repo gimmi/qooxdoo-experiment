@@ -12,15 +12,15 @@ qx.Class.define("trackr.view.FilesWindow", {
 		this.setShowMinimize(false);
 		this.setWidth(250);
 		this.setHeight(300);
-		this.setLayout(new qx.ui.layout.VBox(5));
+		this.setLayout(new qx.ui.layout.HBox(10));
 		var fileList = new qx.ui.form.List();
 		var fileListController = new qx.data.controller.List(files, fileList, "name");
 		this.add(fileList, { flex: 1 });
 
-		var actionsComposite = new qx.ui.container.Composite(new qx.ui.layout.HBox(5));
+		var actionsComposite = new qx.ui.container.Composite(new qx.ui.layout.VBox(5));
+		actionsComposite.add(new qx.ui.form.Button("Open", 'icon/22/actions/document-open.png'));
 		actionsComposite.add(this.__buildFileUploadWidget());
 		actionsComposite.add(new qx.ui.form.Button("Remove", 'icon/22/actions/list-remove.png'));
-		actionsComposite.add(new qx.ui.form.Button("Open", 'icon/22/actions/document-open.png'));
 		this.add(actionsComposite);
 	},
 
