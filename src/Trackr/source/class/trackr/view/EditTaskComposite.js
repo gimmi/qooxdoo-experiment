@@ -120,7 +120,11 @@
 		},
 
 		__openFilesWindow: function () {
-			var w = new trackr.view.FilesWindow();
+			var files = new qx.data.Array(
+				qx.data.marshal.Json.createModel({ id: 'file1', name: 'file1.txt' }),
+				qx.data.marshal.Json.createModel({ id: 'file2', name: 'file2.txt' })
+			);
+			var w = new trackr.view.FilesWindow(files);
 			w.moveTo(50, 30);
 			w.open();
 		},
