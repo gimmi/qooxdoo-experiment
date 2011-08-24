@@ -39,6 +39,9 @@
 		var saveButton = new qx.ui.toolbar.Button("Save", "icon/16/actions/help-about.png");
 		saveButton.addListener("execute", this.__saveTask, this);
 		this._toolBarPart.add(saveButton);
+		var filesButton = new qx.ui.toolbar.Button("Files", "icon/16/actions/help-about.png");
+		filesButton.addListener("execute", this.__openFilesWindow, this);
+		this._toolBarPart.add(filesButton);
 
 		var controller = new qx.data.controller.Object();
 		controller.addTarget(idField, "value", "id", true);
@@ -114,6 +117,12 @@
 			req.send({ task: this.getModel() }, function (response) {
 				this.__setErrors(response.getErrors());
 			}, this);
+		},
+
+		__openFilesWindow: function () {
+			var w = new trackr.view.FilesWindow();
+			w.moveTo(50, 30);
+			w.open();
 		},
 
 		// override trackr.IDocument
