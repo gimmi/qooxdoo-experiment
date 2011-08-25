@@ -41,7 +41,11 @@ qx.Class.define("trackr.view.FilesWindow", {
 				return;
 			}
 			var file = this.__fileListController.getSelection().getItem(0);
-			var url = qx.util.Uri.appendParamsToUrl("/file", { "id": file.getId() });
+			var url = qx.util.Uri.appendParamsToUrl("/file", {
+				id: file.getId(),
+				name: file.getName(), 
+				type: file.getMimeType()
+			});
 			window.open(url, "_blank");
 		},
 		__buildFileUploadWidget: function () {
@@ -54,8 +58,8 @@ qx.Class.define("trackr.view.FilesWindow", {
 			uploadForm.addListener('completed', function (e) {
 				this.__blocker.unblock();
 				uploadForm.clear();
-				var id = uploadForm.getIframeTextContent();
-				this.debug('uploaded file id: ' + id);
+				var metadata = qx.lang.Json.parse(uploadForm.getIframeTextContent());
+				this.debug(metadata);
 			}, this);
 
 			uploadForm.addListener('sending', function (e) {

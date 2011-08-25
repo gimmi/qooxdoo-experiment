@@ -12,5 +12,6 @@ namespace Trackr
 		public IList<Comment> Comments = new List<Comment>();
 		public string StateId;
 		public IList<TaskState> States;
+		public IList<Attachment> Attachments = new List<Attachment>();
 	}
 }

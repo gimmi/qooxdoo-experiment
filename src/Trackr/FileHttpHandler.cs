@@ -3,7 +3,6 @@ using System.Configuration;
 using System.IO;
 using System.Threading;
 using System.Web;
-using System.Web.UI.WebControls;
 
 namespace Trackr
 {
@@ -18,33 +17,30 @@ namespace Trackr
 
 		public void ProcessRequest(HttpContext context)
 		{
-			var repository = new AttachmentRepository();
-			Attachment attachment;
-			switch (context.Request.HttpMethod)
+			switch(context.Request.HttpMethod)
 			{
 				case "GET":
-					attachment = repository.Load(Guid.Parse(context.Request.QueryString["id"]));
-					context.Response.ContentType = attachment.MimeType;
-					context.Response.AppendHeader("Content-Disposition", string.Format("attachment; filename=\"{0}\"", attachment.Name));
-					context.Response.TransmitFile(IdToFileName(attachment.Id));
+					context.Response.ContentType = context.Request.QueryString["type"] ?? "application/octet-stream";
+					context.Response.AppendHeader("Content-Disposition", string.Format("attachment; filename=\"{0}\"", context.Request.QueryString["name"] ?? "file.bin"));
+					context.Response.TransmitFile(IdToFileName(context.Request.QueryString["id"]));
 					break;
 				case "POST":
+					string id = Guid.NewGuid().ToString();
 					HttpPostedFile httpPostedFile = context.Request.Files["file"];
-					attachment = repository.Create(httpPostedFile.FileName, httpPostedFile.ContentType);
-					using (var fileStream = File.Create(IdToFileName(attachment.Id)))
+					using(FileStream fileStream = File.Create(IdToFileName(id)))
 					{
 						httpPostedFile.InputStream.CopyTo(fileStream);
 					}
 					context.Response.ContentType = "text/plain";
-					context.Response.Write(attachment.Id);
+					context.Response.Write(string.Format("{{\"id\":\"{0}\",\"name\":\"{1}\",\"type\":\"{2}\"}}", id, httpPostedFile.FileName, httpPostedFile.ContentType));
 					Thread.Sleep(5000); // TODO for debug
 					break;
 			}
 		}
 
-		private string IdToFileName(Guid id)
+		private string IdToFileName(string id)
 		{
-			return Path.Combine(FilesLocation, id.ToString());
+			return Path.Combine(FilesLocation, id);
 		}
 	}
 }
