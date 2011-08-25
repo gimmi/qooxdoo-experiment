@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using System.IO;
+using System.Threading;
 using System.Web;
 using System.Web.UI.WebControls;
 
@@ -36,6 +37,7 @@ namespace Trackr
 					}
 					context.Response.ContentType = "text/plain";
 					context.Response.Write(attachment.Id);
+					Thread.Sleep(5000); // TODO for debug
 					break;
 			}
 		}
