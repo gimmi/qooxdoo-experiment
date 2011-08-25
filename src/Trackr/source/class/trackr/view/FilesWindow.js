@@ -5,6 +5,7 @@
 */
 qx.Class.define("trackr.view.FilesWindow", {
 	extend: qx.ui.window.Window,
+
 	construct: function (files) {
 		this.base(arguments, "File selector", "icon/22/actions/system-search.png");
 		this.setModal(true);
@@ -13,6 +14,11 @@ qx.Class.define("trackr.view.FilesWindow", {
 		this.setWidth(250);
 		this.setHeight(300);
 		this.setLayout(new qx.ui.layout.HBox(10));
+
+		this.__blocker = new qx.ui.core.Blocker(this);
+		this.__blocker.setColor("#D5D5D5");
+		this.__blocker.setOpacity(0.5);
+
 		var fileList = new qx.ui.form.List();
 		this.__fileListController = new qx.data.controller.List(files, fileList, "name");
 		this.add(fileList, { flex: 1 });
@@ -29,6 +35,7 @@ qx.Class.define("trackr.view.FilesWindow", {
 
 	members: {
 		__fileListController: null,
+		__blocker: null,
 		__openFile: function () {
 			if (!this.__fileListController.getSelection().getLength()) {
 				return;
@@ -45,22 +52,22 @@ qx.Class.define("trackr.view.FilesWindow", {
 			uploadForm.add(uploadButton, { edge: 0 });
 
 			uploadForm.addListener('completed', function (e) {
-				window.alert('completed');
+				this.__blocker.unblock();
 				uploadForm.clear();
-				var response = uploadForm.getIframeTextContent();
-				window.alert('response:' + response);
-			});
+				var id = uploadForm.getIframeTextContent();
+				this.debug('uploaded file id: ' + id);
+			}, this);
 
 			uploadForm.addListener('sending', function (e) {
-				this.debug('sending');
-			});
+				this.__blocker.block();
+				this.debug('start uploading file "' + uploadButton.getFileName() + '" (' + uploadButton.getFileSize() + ' Bytes)');
+			}, this);
 
 			uploadButton.addListener('changeFileName', function (e) {
 				if (e.getData() != '') {
-					window.alert(uploadButton.getFileName() + ' - ' + uploadButton.getFileSize() + ' Bytes');
 					uploadForm.send();
 				}
-			});
+			}, this);
 
 			return uploadForm;
 		}
