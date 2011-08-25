@@ -121,7 +121,7 @@
 
 		__openFilesWindow: function () {
 			var files = new qx.data.Array(
-				qx.data.marshal.Json.createModel({ id: 'file1', name: 'file1.txt' }),
+				qx.data.marshal.Json.createModel({ id: 'DBB02650-3C56-4C5E-A82F-2ACD06BE5956', name: 'file1.txt' }),
 				qx.data.marshal.Json.createModel({ id: 'file2', name: 'file2.txt' })
 			);
 			var w = new trackr.view.FilesWindow(files);
