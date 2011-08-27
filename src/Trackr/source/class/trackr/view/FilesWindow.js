@@ -49,7 +49,7 @@ qx.Class.define("trackr.view.FilesWindow", {
 			window.open(url, "_blank");
 		},
 		__buildFileUploadWidget: function () {
-			var uploadForm = new uploadwidget.UploadForm('uploadFrm', '/file');
+			var uploadForm = new uploadwidget.UploadForm('uploadFrm', qx.core.Environment.get("trackr.serverrootpath") + 'file');
 			uploadForm.setLayout(new qx.ui.layout.Canvas());
 
 			var uploadButton = new uploadwidget.UploadButton('file', 'Upload', 'icon/22/actions/list-add.png');

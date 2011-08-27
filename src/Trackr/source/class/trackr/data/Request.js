@@ -18,7 +18,7 @@
 
 	construct: function (clazz, method) {
 		this.base(arguments);
-		var url = qx.util.Uri.appendParamsToUrl("/rpc", {
+		var url = qx.util.Uri.appendParamsToUrl(qx.core.Environment.get("trackr.serverrootpath") + "rpc", {
 			"class": clazz,
 			"method": method
 		});

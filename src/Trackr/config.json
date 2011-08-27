@@ -53,6 +53,21 @@
 				}
 			}
 		},
+		"source": {
+			"environment" : {
+				"${APPLICATION}.serverrootpath" : "../"
+			}
+		},
+		"source-all": {
+			"environment" : {
+				"${APPLICATION}.serverrootpath" : "../"
+			}
+		},
+		"build": {
+			"environment" : {
+				"${APPLICATION}.serverrootpath" : "../"
+			}
+		},
 
 		// Uncomment the following entry to add a contrib or library to your
 		// project; make sure to adapt the path to the Manifest.json; if you are
