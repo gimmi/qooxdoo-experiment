@@ -43,6 +43,9 @@
     <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="source\resource\trackr\" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="source\class\trackr\Application.js" />
     <Content Include="source\class\trackr\data\Request.js" />
     <Content Include="source\class\trackr\data\TaskInfoDataModel.js" />
@@ -61,11 +64,6 @@
     <Content Include="source\class\trackr\view\Header.js" />
     <Content Include="source\class\trackr\view\SearchTaskComposite.js" />
     <Content Include="source\index.html" />
-    <Content Include="source\script\trackr.175f6b1d5f6c.js" />
-    <Content Include="source\script\trackr.932f821a5917.js" />
-    <Content Include="source\script\trackr.9cdad7a931bd.js" />
-    <Content Include="source\script\trackr.bfaddaf09104.js" />
-    <Content Include="source\script\trackr.js" />
     <Content Include="source\translation\readme.txt" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -86,9 +84,7 @@
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="source\resource\trackr\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
   <ProjectExtensions>
