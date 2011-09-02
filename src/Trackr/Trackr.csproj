@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="JsonRpcHandler">
+      <HintPath>..\..\lib\JsonRpcHandler.0.2\lib\net40\JsonRpcHandler.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\lib\Newtonsoft.Json.4.0.2\lib\net40\Newtonsoft.Json.dll</HintPath>
@@ -40,19 +43,30 @@
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="source\class\trackr\test\io\rpc\" />
     <Folder Include="source\resource\trackr\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Global.asax" />
     <Content Include="source\class\trackr\Application.js" />
+    <Content Include="source\class\trackr\io\rpc\batchstrategy\AutomaticBatchStrategy.js" />
+    <Content Include="source\class\trackr\io\rpc\batchstrategy\NoBatchStrategy.js" />
+    <Content Include="source\class\trackr\io\rpc\batchstrategy\IBatchStrategy.js" />
+    <Content Include="source\class\trackr\io\rpc\batchstrategy\ManualBatchStrategy.js" />
     <Content Include="source\class\trackr\data\Request.js" />
+    <Content Include="source\class\trackr\io\rpc\Rpc.js" />
+    <Content Include="source\class\trackr\io\rpc\RpcFactory.js" />
     <Content Include="source\class\trackr\data\TaskInfoDataModel.js" />
     <Content Include="source\class\trackr\IDocument.js" />
     <Content Include="source\class\trackr\simulation\DemoSimulation.js" />
     <Content Include="source\class\trackr\test\data\RequestTest.js" />
     <Content Include="source\class\trackr\test\DemoTest.js" />
+    <Content Include="source\class\trackr\test\data\RpcFactoryTest.js" />
     <Content Include="source\class\trackr\theme\Appearance.js" />
     <Content Include="source\class\trackr\theme\Color.js" />
     <Content Include="source\class\trackr\theme\Decoration.js" />
@@ -72,6 +86,9 @@
     <Compile Include="Comment.cs" />
     <Compile Include="FileHttpHandler.cs" />
     <Compile Include="AttachmentRepository.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
     <Compile Include="TaskRepository.cs" />
     <Compile Include="Task.cs" />
     <Compile Include="ObjectFactory.cs" />
